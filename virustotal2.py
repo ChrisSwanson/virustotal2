@@ -105,7 +105,7 @@ class VirusTotal2(object):
     def retrieve(self, thing, thing_type=None, raw=False):
         """
         Retrieve a report from VirusTotal based on a hash, IP, domain, file or URL.  NOTE: URLs must include the scheme
-         (e.g. http://)
+         (e.g. https://)
         Returns a VirusTotal2Report object
 
         Keyword arguments:
@@ -125,7 +125,7 @@ class VirusTotal2(object):
         data = {"apikey": self.api_key}
 
         if thing_type == "url":
-            endpoint = "http://www.virustotal.com/vtapi/v2/url/report"
+            endpoint = "https://www.virustotal.com/vtapi/v2/url/report"
             if isinstance(thing, list):
                 #break the list we get into groups of 4, per the VT API limits
                 list_of_lists = self._grouped(thing, self._urls_per_retrieve)
@@ -161,7 +161,7 @@ class VirusTotal2(object):
                 result = requests.post(endpoint, data=data).text
 
         elif thing_type == "ip":
-            endpoint = "http://www.virustotal.com/vtapi/v2/ip-address/report"
+            endpoint = "https://www.virustotal.com/vtapi/v2/ip-address/report"
             if not isinstance(thing, list):
                 thing = [thing]
             #
@@ -189,7 +189,7 @@ class VirusTotal2(object):
             result = json.dumps(list_of_results)
 
         elif thing_type == "file_name" or thing_type == "base64":
-            endpoint = "http://www.virustotal.com/vtapi/v2/file/report"
+            endpoint = "https://www.virustotal.com/vtapi/v2/file/report"
             hashes = []
             if not isinstance(thing, list):
                 thing = [thing]
@@ -208,7 +208,7 @@ class VirusTotal2(object):
             result = requests.post(endpoint, data=data).text
 
         elif thing_type == 'domain':
-            endpoint = "http://www.virustotal.com/vtapi/v2/domain/report"
+            endpoint = "https://www.virustotal.com/vtapi/v2/domain/report"
             #domains don't support bulk queries
             if isinstance(thing, list):
                 raise TypeError
@@ -217,7 +217,7 @@ class VirusTotal2(object):
             result = requests.get(endpoint, params=data).text
 
         elif thing_type == 'hash':
-            endpoint = "http://www.virustotal.com/vtapi/v2/file/report"
+            endpoint = "https://www.virustotal.com/vtapi/v2/file/report"
             if isinstance(thing, list):
                 data["resource"] = ", ".join(thing)
             else:
